@@ -106,7 +106,7 @@
               <tr>
                 <th scope="col">Name</th>
                 <th scope="col">Email</th>
-                <th scope="col">Current Role</th>
+                <th scope="col">Status</th>
                 <th scope="col">Change Role</th>
               </tr>
             </thead>
@@ -114,8 +114,11 @@
               <tr *ngFor="let user of users">
                 <td>{{ user.name }}</td>
                 <td>{{ user.email }}</td>
-                <td>{{ user.role }}</td>
                 <td>
+                  <span class="badge badge-dot mr-4">
+                    <i class="bg-danger"></i> En Attente 
+                  </span>
+                </td>                <td>
                   <select class="form-control" (change)="updateRole(user.id, $event.target.value)" [value]="user.role">
                     <option value="EMPLOYE">Employé</option>
                     <option value="CHEF">Chef</option>
@@ -156,4 +159,3 @@
   </div>
   <!-- Dark table -->
 </div>
-
