@@ -8,12 +8,13 @@
             <div class="card-body">
               <div class="row">
                 <div class="col">
-                  <h5 class="card-title text-uppercase text-muted mb-0">Traffic</h5>
-                  <span class="h2 font-weight-bold mb-0">350,897</span>
+                  <h5 class="card-title text-uppercase text-muted mb-0">Personnel Count</h5>
+                  <span class="h2 font-weight-bold mb-0">{{ personnelCount }}</span>
                 </div>
+                
                 <div class="col-auto">
                   <div class="icon icon-shape bg-danger text-white rounded-circle shadow">
-                    <i class="fas fa-chart-bar"></i>
+                    <i class="fas fa-users"></i>
                   </div>
                 </div>
               </div>
@@ -30,11 +31,11 @@
               <div class="row">
                 <div class="col">
                   <h5 class="card-title text-uppercase text-muted mb-0">New users</h5>
-                  <span class="h2 font-weight-bold mb-0">2,356</span>
+                  <span class="h2 font-weight-bold mb-0">{{ newCount }}</span>
                 </div>
                 <div class="col-auto">
                   <div class="icon icon-shape bg-warning text-white rounded-circle shadow">
-                    <i class="fas fa-chart-pie"></i>
+                    <i class="fas fa-users"></i>
                   </div>
                 </div>
               </div>
@@ -50,8 +51,8 @@
             <div class="card-body">
               <div class="row">
                 <div class="col">
-                  <h5 class="card-title text-uppercase text-muted mb-0">Sales</h5>
-                  <span class="h2 font-weight-bold mb-0">924</span>
+                  <h5 class="card-title text-uppercase text-muted mb-0">Chefs</h5>
+                  <span class="h2 font-weight-bold mb-0">{{ chefCount }}</span>
                 </div>
                 <div class="col-auto">
                   <div class="icon icon-shape bg-yellow text-white rounded-circle shadow">
@@ -72,7 +73,7 @@
               <div class="row">
                 <div class="col">
                   <h5 class="card-title text-uppercase text-muted mb-0">Performance</h5>
-                  <span class="h2 font-weight-bold mb-0">49,65%</span>
+                  <span class="h2 font-weight-bold mb-0">{{all}}</span>
                 </div>
                 <div class="col-auto">
                   <div class="icon icon-shape bg-info text-white rounded-circle shadow">
@@ -93,7 +94,6 @@
 </div>
 <!-- Page content -->
 <div class="container-fluid mt--7">
-  <!-- Table -->
   <div class="row">
     <div class="col">
       <div class="card shadow">
@@ -108,6 +108,7 @@
                 <th scope="col">Email</th>
                 <th scope="col">Status</th>
                 <th scope="col">Change Role</th>
+                <th scope="col">Assign to Chef</th>
               </tr>
             </thead>
             <tbody>
@@ -116,19 +117,27 @@
                 <td>{{ user.email }}</td>
                 <td>
                   <span class="badge badge-dot mr-4">
-                    <i class="bg-danger"></i> En Attente 
+                    <i class="bg-danger"></i> En Attente
                   </span>
-                </td>                <td>
-                  <select class="form-control" (change)="updateRole(user.id, $event.target.value)" [value]="user.role">
-                    <option value="EMPLOYE">Employé</option>
+                </td>
+                <td>
+                  <select class="form-control" (change)="onRoleChange(user.id, $event.target.value)">
                     <option value="CHEF">Chef</option>
                     <option value="PERSONNEL">Personnel</option>
+                  </select>
+                </td>
+                <td *ngIf="user.selectedRole === 'PERSONNEL'">
+                  <select class="form-control" (change)="onChefChange(user.id, $event.target.value)">
+                    <option *ngFor="let chef of chefs" [value]="chef.id">{{ chef.name }}</option>
                   </select>
                 </td>
               </tr>
             </tbody>
           </table>
         </div>
+        
+        
+        
         <div class="card-footer py-4">
           <nav aria-label="...">
             <ul class="pagination justify-content-end mb-0">
@@ -157,5 +166,4 @@
       </div>
     </div>
   </div>
-  <!-- Dark table -->
 </div>

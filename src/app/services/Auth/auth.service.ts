@@ -28,4 +28,7 @@ export class AuthService {
   updateUserRole(userId: number, newRole: string): Observable<any> {
     return this.http.put<any>(`${this.baseUrl}/role/${userId}?newRole=${newRole}`, {});
   }
+  assignPersonnelToChef(personnelId: number, chefId: number): Observable<any> {
+    return this.http.post<any>(`${this.baseUrl}/assignPersonnelToChef`, null, { params: { personnelId, chefId } });
+  }
 }

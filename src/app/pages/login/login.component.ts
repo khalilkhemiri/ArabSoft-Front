@@ -32,8 +32,9 @@ export class LoginComponent implements OnInit {
           if (response.statusCode === 200) {
             // Store token and user info
             localStorage.setItem('token', response.token);
-            localStorage.setItem('user', JSON.stringify(response.user));  // Store user info
-            console.log(response.user)
+            localStorage.setItem('user', JSON.stringify(response.users));  // Store user info
+            console.log(response.users)
+
             this.router.navigate(['/dashboard']);
           } else {
             this.errorMessage = response.message || 'Login failed';
