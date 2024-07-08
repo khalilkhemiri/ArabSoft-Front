@@ -1,81 +1,56 @@
-import { Component, inject } from '@angular/core';
-import { NgbCalendar, NgbDate, NgbDateParserFormatter, NgbDatepickerModule } from '@ng-bootstrap/ng-bootstrap';
-import { FormsModule } from '@angular/forms';
-import { JsonPipe } from '@angular/common';
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
+import { CongeService } from 'src/app/services/Conge/conge.service';
 
 @Component({
   selector: 'app-conge',
-  standalone: true,
-  imports: [NgbDatepickerModule, FormsModule, JsonPipe],
   templateUrl: './conge.component.html',
-  styles: [`
-    .dp-hidden {
-      width: 0;
-      margin: 0;
-      border: none;
-      padding: 0;
-    }
-    .custom-day {
-      text-align: center;
-      padding: 0.185rem 0.25rem;
-      display: inline-block;
-      height: 2rem;
-      width: 2rem;
-    }
-    .custom-day.focused {
-      background-color: #e6e6e6;
-    }
-    .custom-day.range,
-    .custom-day:hover {
-      background-color: rgb(2, 117, 216);
-      color: white;
-    }
-    .custom-day.faded {
-      background-color: rgba(2, 117, 216, 0.5);
-    }
-  `]
+  styleUrls: ['./conge.component.css'],
 })
-export class CongeComponent {
+export class CongeComponent implements OnInit {
+  congeForm: FormGroup;
+  user: any;
 
-  calendar = inject(NgbCalendar);
-  formatter = inject(NgbDateParserFormatter);
+  constructor(private fb: FormBuilder, private congeService: CongeService, private router: Router) {}
 
-  hoveredDate: NgbDate | null = null;
-  fromDate: NgbDate | null = this.calendar.getToday();
-  toDate: NgbDate | null = this.calendar.getNext(this.calendar.getToday(), 'd', 10);
+  ngOnInit(): void {
+    this.congeForm = this.fb.group({
+      motif: ['', Validators.required],
+      start: ['', Validators.required],
+      end: ['', Validators.required]
+    });
+    this.user = JSON.parse(localStorage.getItem('user') || '{}');
+    console.log(this.user.id)
+  }
 
-  onDateSelection(date: NgbDate) {
-    if (!this.fromDate && !this.toDate) {
-      this.fromDate = date;
-    } else if (this.fromDate && !this.toDate && date && date.after(this.fromDate)) {
-      this.toDate = date;
-    } else {
-      this.toDate = null;
-      this.fromDate = date;
+  onSubmit(): void {
+    if (this.congeForm.valid) {
+      const formValue = this.congeForm.value;
+      const formattedStartDate = this.formatDate(formValue.start);
+      const formattedEndDate = this.formatDate(formValue.end);
+      const data = {
+        motif: formValue.motif,
+        dateDebut: formattedStartDate,
+        dateFin:formattedEndDate,
+        utilisateurId:this.user.id
+      };
+
+      this.congeService.AddConge(data).subscribe(
+        response => {
+          console.log('Demande de congé soumise avec succès', response);
+          this.router.navigate(['/dashboard']);
+        },
+        error => {
+          console.error('Erreur lors de la soumission de la demande de congé', error);
+        }
+      );
     }
   }
-
-  isHovered(date: NgbDate) {
-    return (
-      this.fromDate && !this.toDate && this.hoveredDate && date.after(this.fromDate) && date.before(this.hoveredDate)
-    );
-  }
-
-  isInside(date: NgbDate) {
-    return this.toDate && date.after(this.fromDate) && date.before(this.toDate);
-  }
-
-  isRange(date: NgbDate) {
-    return (
-      date.equals(this.fromDate) ||
-      (this.toDate && date.equals(this.toDate)) ||
-      this.isInside(date) ||
-      this.isHovered(date)
-    );
-  }
-
-  validateInput(currentValue: NgbDate | null, input: string): NgbDate | null {
-    const parsed = this.formatter.parse(input);
-    return parsed && this.calendar.isValid(NgbDate.from(parsed)) ? NgbDate.from(parsed) : currentValue;
+  formatDate(date: Date | string): string {
+    if (date instanceof Date) {
+      return date.toISOString().split('T')[0];
+    }
+    return date;
   }
 }

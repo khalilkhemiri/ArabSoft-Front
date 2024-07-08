@@ -1,59 +1,42 @@
 <div class="header bg-gradient-danger pb-8 pt-5 pt-md-8">
-    <form class="row row-cols-sm-auto">
-        <div class="col-12">
-            <div class="dp-hidden position-absolute">
-                <div class="input-group">
-                    <input
-                        name="datepicker"
-                        class="form-control"
-                        ngbDatepicker
-                        #datepicker="ngbDatepicker"
-                        [autoClose]="'outside'"
-                        (dateSelect)="onDateSelection($event)"
-                        [displayMonths]="2"
-                        [dayTemplate]="t"
-                        outsideDays="hidden"
-                        [startDate]="fromDate!"
-                        tabindex="-1"
-                    />
-                    <ng-template #t let-date let-focused="focused">
-                        <span
-                            class="custom-day"
-                            [class.focused]="focused"
-                            [class.range]="isRange(date)"
-                            [class.faded]="isHovered(date) || isInside(date)"
-                            (mouseenter)="hoveredDate = date"
-                            (mouseleave)="hoveredDate = null"
-                        >
-                            {{ date.day }}
-                        </span>
-                    </ng-template>
-                </div>
-            </div>
-            <div class="input-group">
-                <input
-                    #dpFromDate
-                    class="form-control"
-                    placeholder="yyyy-mm-dd"
-                    name="dpFromDate"
-                    [value]="formatter.format(fromDate)"
-                    (input)="fromDate = validateInput(fromDate, dpFromDate.value)"
-                />
-                <button class="btn btn-outline-secondary bi bi-calendar3" (click)="datepicker.toggle()" type="button"></button>
-            </div>
-        </div>
-        <div class="col-12">
-            <div class="input-group">
-                <input
-                    #dpToDate
-                    class="form-control"
-                    placeholder="yyyy-mm-dd"
-                    name="dpToDate"
-                    [value]="formatter.format(toDate)"
-                    (input)="toDate = validateInput(toDate, dpToDate.value)"
-                />
-                <button class="btn btn-outline-secondary bi bi-calendar3" (click)="datepicker.toggle()" type="button"></button>
-            </div>
-        </div>
-    </form>
+    
 </div>
+<div class="container mt--6">
+  <div class="card">
+    <div class="card-header">
+      <h3 class="card-title">Demande de Congé</h3>
+    </div>
+    <div class="card-body">
+      <form [formGroup]="congeForm" (ngSubmit)="onSubmit()">
+        <div class="form-group">
+          <label for="motif">Motif</label>
+          <input id="motif" formControlName="motif" class="form-control" placeholder="Motif de la demande">
+        </div>
+
+        <mat-form-field class="full-width">
+          <mat-label>Entrez une plage de dates</mat-label>
+          <mat-date-range-input [formGroup]="congeForm" [rangePicker]="picker">
+            <input matStartDate formControlName="start" placeholder="Date de début">
+            <input matEndDate formControlName="end" placeholder="Date de fin">
+          </mat-date-range-input>
+          <mat-hint>MM/JJ/AAAA – MM/JJ/AAAA</mat-hint>
+          <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-date-range-picker #picker></mat-date-range-picker>
+
+          <mat-error *ngIf="congeForm.get('start').hasError('matStartDateInvalid')">
+            Date de début invalide
+          </mat-error>
+          <mat-error *ngIf="congeForm.get('end').hasError('matEndDateInvalid')">
+            Date de fin invalide
+          </mat-error>
+        </mat-form-field>
+
+        <button type="submit" class="btn btn-primary" [disabled]="!congeForm.valid">Soumettre</button>
+      </form>
+    </div>
+  </div>
+</div>
+
+
+
+  

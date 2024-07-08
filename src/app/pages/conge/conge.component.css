@@ -1,24 +1,22 @@
-.dp-hidden {
-    width: 0;
-    margin: 0;
-    border: none;
-    padding: 0;
+.container {
+  max-width: 600px;
+  margin: auto;
 }
-.custom-day {
-    text-align: center;
-    padding: 0.185rem 0.25rem;
-    display: inline-block;
-    height: 2rem;
-    width: 2rem;
+
+.card {
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
 }
-.custom-day.focused {
-    background-color: #e6e6e6;
+
+.card-header {
+  background-color: #f8f9fa;
+  border-bottom: 1px solid #e9ecef;
 }
-.custom-day.range,
-.custom-day:hover {
-    background-color: rgb(2, 117, 216);
-    color: white;
+
+.card-title {
+  margin: 0;
 }
-.custom-day.faded {
-    background-color: rgba(2, 117, 216, 0.5);
+
+.full-width {
+  width: 100%;
 }
