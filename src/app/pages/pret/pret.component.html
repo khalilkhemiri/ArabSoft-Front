@@ -1,0 +1,36 @@
+<div class="header bg-gradient-danger pb-8 pt-5 pt-md-8"></div>
+<div class="container mt--6">
+  <div class="card">
+    <div class="card-header">
+      <h3 class="card-title">Demande de Prêt</h3>
+    </div>
+    <div class="card-body">
+      <form #loanForm="ngForm" (ngSubmit)="confirmSubmit(loanForm)">
+        
+        <div class="form-group">
+          <label for="montant">Montant du Prêt</label>
+          <p-inputNumber [(ngModel)]="loanRequest.montant" name="montant" [showButtons]="true" mode="currency" currency="TND" required></p-inputNumber>
+        </div>
+
+        <div class="form-group">
+          <label class="text-black">Type de Demande</label>
+          <div class="radio-group">
+            <div class="form-check">
+              <input type="radio" id="typePret" name="type" value="pret" [(ngModel)]="selectedType" class="form-check-input">
+              <label for="typePret" class="form-check-label">Prêt</label>
+            </div>
+            <div class="form-check">
+              <input type="radio" id="typeAvance" name="type" value="avance" [(ngModel)]="selectedType" class="form-check-input">
+              <label for="typeAvance" class="form-check-label ">Avance sur Salaires</label>
+            </div>
+          </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary" [disabled]="loanForm.invalid">Soumettre</button>
+      </form>
+      
+      <!-- Confirmation Dialog -->
+      <p-confirmDialog></p-confirmDialog>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,80 @@
+<div class="header bg-gradient-danger pb-8 pt-5 pt-md-8">
+</div>
+
+	<p-table #dt2 [value]="customers" dataKey="id" [rows]="10" [showCurrentPageReport]="true"
+	  [rowsPerPageOptions]="[10,25,50]" [loading]="loading" styleClass="p-datatable-customers" [paginator]="true"
+	  currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+	  [globalFilterFields]="['name', 'email', 'chefHierarchique.name']"class="mt--5  " >
+	  
+	  <ng-template pTemplate="caption">
+		<div class="p-d-flex  ">
+		  <span class="p-input-icon-left p-ml-auto">
+			<i class="pi pi-search"></i>
+			<input pInputText type="text" (input)="dt2.filterGlobal($event.target.value, 'contains')" placeholder="Search keyword" />
+		  </span>
+		</div>
+	  </ng-template>
+	  
+	  <ng-template pTemplate="header">
+		<tr>
+		  <th>Name</th>
+		  <th>Email</th>
+		  <th>Chef</th>
+		  <th>Status</th>
+		  <th style="width: 6rem">Verified</th>
+		</tr>
+		<tr>
+		  <th>
+			<p-columnFilter type="text" field="name"></p-columnFilter>
+		  </th>
+		  <th>
+			<p-columnFilter type="text" field="email"></p-columnFilter>
+		  </th>
+		  <th>
+			<p-columnFilter field="chefHierarchique.name" matchMode="in" [showMenu]="false">
+			  <ng-template pTemplate="filter" let-value let-filter="filterCallback">
+				<p-multiSelect [ngModel]="value" [options]="representatives" placeholder="Any"
+				  (onChange)="filter($event.value)" optionLabel="name">
+				  <ng-template let-option pTemplate="item">
+					<div class="p-multiselect-representative-option">
+					  <span class="p-ml-1">{{ option.name }}</span>
+					</div>
+				  </ng-template>
+				</p-multiSelect>
+			  </ng-template>
+			</p-columnFilter>
+		  </th>
+		  <th>
+			<p-columnFilter type="boolean" field="accountNonLocked"></p-columnFilter>
+		  </th>
+		  <th>
+			<p-columnFilter type="boolean" field="verified"></p-columnFilter>
+		  </th>
+		</tr>
+	  </ng-template>
+	  
+	  <ng-template pTemplate="body" let-customer>
+		<tr>
+		  <td>{{ customer.name }}</td>
+		  <td>
+			<span class="image-text">{{ customer.email }}</span>
+		  </td>
+		  <td>
+			<span *ngIf="customer.chefHierarchique" class="image-text">{{ customer.chefHierarchique.name }}</span>
+		  </td>
+		  <td>
+			<span [class]="'customer-badge status-' + customer.accountNonLocked">{{ customer.online }}</span>
+		  </td>
+		  <td>
+			<i class="pi" [ngClass]="{'true-icon pi-check-circle': customer.online, 'false-icon pi-times-circle': !customer.online}"></i>
+		  </td>
+		</tr>
+	  </ng-template>
+	  
+	  <ng-template pTemplate="emptymessage">
+		<tr>
+		  <td colspan="5">No customers found.</td>
+		</tr>
+	  </ng-template>
+	</p-table>
+  

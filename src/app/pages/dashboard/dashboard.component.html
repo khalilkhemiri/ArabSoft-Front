@@ -8,8 +8,8 @@
             <div class="card-body">
               <div class="row">
                 <div class="col">
-                  <h5 class="card-title text-uppercase text-muted mb-0">Traffic</h5>
-                  <span class="h2 font-weight-bold mb-0">350,897</span>
+                  <h5 class="card-title text-uppercase text-muted mb-0">Total de demandes du jour </h5>
+                  <span class="h2 font-weight-bold mb-0">{{demandesDuJour}}</span>
                 </div>
                 <div class="col-auto">
                   <div class="icon icon-shape bg-danger text-white rounded-circle shadow">
@@ -29,7 +29,7 @@
             <div class="card-body">
               <div class="row">
                 <div class="col">
-                  <h5 class="card-title text-uppercase text-muted mb-0">New users</h5>
+                  <h5 class="card-title text-uppercase text-muted mb-0">users</h5>
                   <span class="h2 font-weight-bold mb-0">2,356</span>
                 </div>
                 <div class="col-auto">
@@ -50,8 +50,8 @@
             <div class="card-body">
               <div class="row">
                 <div class="col">
-                  <h5 class="card-title text-uppercase text-muted mb-0">Sales</h5>
-                  <span class="h2 font-weight-bold mb-0">924</span>
+                  <h5 class="card-title text-uppercase text-muted mb-0">Total de demandes en attente</h5>
+                  <span class="h2 font-weight-bold mb-0">{{demandesEnAttenteCount}}</span>
                 </div>
                 <div class="col-auto">
                   <div class="icon icon-shape bg-yellow text-white rounded-circle shadow">
@@ -92,278 +92,166 @@
   </div>
 </div>
 <div class="container-fluid mt--7">
-  <div class="row">
-    <div class="col-xl-8 mb-5 mb-xl-0">
-      <div class="card bg-gradient-default shadow">
-        <div class="card-header bg-transparent">
-          <div class="row align-items-center">
-            <div class="col">
-              <h6 class="text-uppercase text-light ls-1 mb-1">Overview</h6>
-              <h2 class="text-white mb-0">Sales value</h2>
-            </div>
-            <div class="col">
-              <ul class="nav nav-pills justify-content-end">
-                <li class="nav-item mr-2 mr-md-0" data-toggle="chart" data-target="#chart-sales"  (click)="data=datasets[0];updateOptions()">
-                  <a href="javascript:void(0)" class="nav-link py-2 px-3" [ngClass]="{'active':clicked===true}" data-toggle="tab" (click)="clicked=true;clicked1=false">
-                    <span class="d-none d-md-block">Month</span>
-                    <span class="d-md-none">M</span>
-                  </a>
-                </li>
-                <li class="nav-item" data-toggle="chart" data-target="#chart-sales"  (click)="data=datasets[1];updateOptions()">
-                  <a href="javascript:void(0)" class="nav-link py-2 px-3" [ngClass]="{'active':clicked1===true}" data-toggle="tab" (click)="clicked=false;clicked1=true">
-                    <span class="d-none d-md-block">Week</span>
-                    <span class="d-md-none">W</span>
-                  </a>
-                </li>
-              </ul>
-            </div>
-          </div>
-        </div>
-        <div class="card-body">
-          <!-- Chart -->
-          <div class="chart">
-            <!-- Chart wrapper -->
-            <canvas id="chart-sales" class="chart-canvas"></canvas>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="col-xl-4">
-      <div class="card shadow">
-        <div class="card-header bg-transparent">
-          <div class="row align-items-center">
-            <div class="col">
-              <h6 class="text-uppercase text-muted ls-1 mb-1">Performance</h6>
-              <h2 class="mb-0">Total orders</h2>
-            </div>
-          </div>
-        </div>
-        <div class="card-body">
-          <!-- Chart -->
-          <div class="chart">
-            <canvas id="chart-orders" class="chart-canvas"></canvas>
-          </div>
-        </div>
-      </div>
-    </div>
+
+  <div class="card">
+    <h5>Demandes d'Autorisation</h5>
+    <p-table #dt1 [value]="demandes" selectionMode="single" (onRowSelect)="openDialog($event.data)" dataKey="id" [tableStyle]="{'min-width': '50rem'}"
+             [rows]="10" [paginator]="true" stateStorage="session" stateKey="statedemo-session">
+      <ng-template pTemplate="header">
+        <tr>
+          <th pSortableColumn="utilisateur.name" style="width:25%">Utilisateur <p-sortIcon field="utilisateur.name"></p-sortIcon></th>
+          <th pSortableColumn="type" style="width:15%">Type Demande <p-sortIcon field="type"></p-sortIcon></th>
+          <th pSortableColumn="dateDemande" style="width:20%">Date de Demande <p-sortIcon field="dateDemande"></p-sortIcon></th>
+          <th pSortableColumn="montant" style="width:15%">Montant <p-sortIcon field="montant"></p-sortIcon></th>
+          <th pSortableColumn="statut" style="width:15%">Statut <p-sortIcon field="statut"></p-sortIcon></th>
+        </tr>
+        <tr>
+          <th>
+            <input pInputText type="text" (input)="dt1.filter($event.target.value, 'utilisateur.name', 'contains')" [value]="dt1.filters['utilisateur.name']?.value" placeholder="Search by Utilisateur" class="w-full">
+          </th>
+          <th>
+            <input pInputText type="text" (input)="dt1.filter($event.target.value, 'type', 'contains')" [value]="dt1.filters['type']?.value" placeholder="Search by Type" class="w-full">
+          </th>
+          <th>
+            <input pInputText type="text" (input)="dt1.filter($event.target.value, 'dateDemande', 'contains')" [value]="dt1.filters['dateDemande']?.value" placeholder="Search by Date de Demande" class="w-full">
+          </th>
+          <th>
+            <input pInputText type="text" (input)="dt1.filter($event.target.value, 'montant', 'contains')" [value]="dt1.filters['montant']?.value" placeholder="Search by Montant" class="w-full">
+          </th>
+          <th>
+            <input pInputText type="text" (input)="dt1.filter($event.target.value, 'statut', 'contains')" [value]="dt1.filters['statut']?.value" placeholder="Search by Statut" class="w-full">
+          </th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-demande>
+        <tr [pSelectableRow]="demande">
+          <td>
+            <span class="p-column-title">Utilisateur</span>
+            {{demande.utilisateur.name}}
+          </td>
+          <td>
+            <span class="p-column-title">Type</span>
+            {{demande.type}}
+          </td>
+          <td>
+            <span class="p-column-title">Date de Demande</span>
+            {{demande.dateDemande}}
+          </td>
+          <td>
+            <span class="p-column-title">Montant</span>
+            {{demande.montant}}
+          </td>
+          <td>
+            <span class="p-column-title">Statut</span>
+            <span [ngClass]="{
+              'status-rejetee': demande.statut === 'REJETEE',
+              'status-approuvee': demande.statut === 'APPROUVEE',
+              'status-en-attente': demande.statut === 'EN_ATTENTE'
+            }">
+              {{demande.statut}}
+            </span>
+          </td>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="emptymessage">
+        <tr>
+          <td colspan="5">Aucune demande trouvée.</td>
+        </tr>
+      </ng-template>
+    </p-table>
   </div>
-  <div class="row mt-5">
-    <div class="col-xl-8 mb-5 mb-xl-0">
-      <div class="card shadow">
-        <div class="card-header border-0">
-          <div class="row align-items-center">
-            <div class="col">
-              <h3 class="mb-0">Page visits</h3>
-            </div>
-            <div class="col text-right">
-              <a href="#!" class="btn btn-sm btn-primary">See all</a>
-            </div>
-          </div>
-        </div>
-        <div class="table-responsive">
-          <!-- Projects table -->
-          <table class="table align-items-center table-flush">
-            <thead class="thead-light">
-              <tr>
-                <th scope="col">Page name</th>
-                <th scope="col">Visitors</th>
-                <th scope="col">Unique users</th>
-                <th scope="col">Bounce rate</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <th scope="row">
-                  /argon/
-                </th>
-                <td>
-                  4,569
-                </td>
-                <td>
-                  340
-                </td>
-                <td>
-                  <i class="fas fa-arrow-up text-success mr-3"></i> 46,53%
-                </td>
-              </tr>
-              <tr>
-                <th scope="row">
-                  /argon/index.html
-                </th>
-                <td>
-                  3,985
-                </td>
-                <td>
-                  319
-                </td>
-                <td>
-                  <i class="fas fa-arrow-down text-warning mr-3"></i> 46,53%
-                </td>
-              </tr>
-              <tr>
-                <th scope="row">
-                  /argon/charts.html
-                </th>
-                <td>
-                  3,513
-                </td>
-                <td>
-                  294
-                </td>
-                <td>
-                  <i class="fas fa-arrow-down text-warning mr-3"></i> 36,49%
-                </td>
-              </tr>
-              <tr>
-                <th scope="row">
-                  /argon/tables.html
-                </th>
-                <td>
-                  2,050
-                </td>
-                <td>
-                  147
-                </td>
-                <td>
-                  <i class="fas fa-arrow-up text-success mr-3"></i> 50,87%
-                </td>
-              </tr>
-              <tr>
-                <th scope="row">
-                  /argon/profile.html
-                </th>
-                <td>
-                  1,795
-                </td>
-                <td>
-                  190
-                </td>
-                <td>
-                  <i class="fas fa-arrow-down text-danger mr-3"></i> 46,53%
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
+  
+  <p-dialog header="Détails de la Demande" [(visible)]="displayDialog" [modal]="true" [responsive]="true" [style]="{'width': '50vw', 'height': '70vh'}">
+    <div *ngIf="selectedDemande" class="dialog-content">
+      <div class="detail-item">
+          <span class="label"><strong>Utilisateur:</strong></span>
+          <span class="value">{{selectedDemande.utilisateur.name}}</span>
       </div>
-    </div>
-    <div class="col-xl-4">
-      <div class="card shadow">
-        <div class="card-header border-0">
-          <div class="row align-items-center">
-            <div class="col">
-              <h3 class="mb-0">Social traffic</h3>
-            </div>
-            <div class="col text-right">
-              <a href="#!" class="btn btn-sm btn-primary">See all</a>
-            </div>
-          </div>
-        </div>
-        <div class="table-responsive">
-          <!-- Projects table -->
-          <table class="table align-items-center table-flush">
-            <thead class="thead-light">
-              <tr>
-                <th scope="col">Referral</th>
-                <th scope="col">Visitors</th>
-                <th scope="col"></th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <th scope="row">
-                  Facebook
-                </th>
-                <td>
-                  1,480
-                </td>
-                <td>
-                  <div class="d-flex align-items-center">
-                    <span class="mr-2">60%</span>
-                    <div>
-                      <div class="progress">
-                        <div class="progress-bar bg-gradient-danger" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%;"></div>
-                      </div>
-                    </div>
-                  </div>
-                </td>
-              </tr>
-              <tr>
-                <th scope="row">
-                  Facebook
-                </th>
-                <td>
-                  5,480
-                </td>
-                <td>
-                  <div class="d-flex align-items-center">
-                    <span class="mr-2">70%</span>
-                    <div>
-                      <div class="progress">
-                        <div class="progress-bar bg-gradient-success" role="progressbar" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100" style="width: 70%;"></div>
-                      </div>
-                    </div>
-                  </div>
-                </td>
-              </tr>
-              <tr>
-                <th scope="row">
-                  Google
-                </th>
-                <td>
-                  4,807
-                </td>
-                <td>
-                  <div class="d-flex align-items-center">
-                    <span class="mr-2">80%</span>
-                    <div>
-                      <div class="progress">
-                        <div class="progress-bar bg-gradient-primary" role="progressbar" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100" style="width: 80%;"></div>
-                      </div>
-                    </div>
-                  </div>
-                </td>
-              </tr>
-              <tr>
-                <th scope="row">
-                  Instagram
-                </th>
-                <td>
-                  3,678
-                </td>
-                <td>
-                  <div class="d-flex align-items-center">
-                    <span class="mr-2">75%</span>
-                    <div>
-                      <div class="progress">
-                        <div class="progress-bar bg-gradient-info" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style="width: 75%;"></div>
-                      </div>
-                    </div>
-                  </div>
-                </td>
-              </tr>
-              <tr>
-                <th scope="row">
-                  twitter
-                </th>
-                <td>
-                  2,645
-                </td>
-                <td>
-                  <div class="d-flex align-items-center">
-                    <span class="mr-2">30%</span>
-                    <div>
-                      <div class="progress">
-                        <div class="progress-bar bg-gradient-warning" role="progressbar" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100" style="width: 30%;"></div>
-                      </div>
-                    </div>
-                  </div>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
+      <div class="detail-item">
+          <span class="label"><strong>Type:</strong></span>
+          <span class="value">{{selectedDemande.type}}</span>
       </div>
+      <div class="detail-item">
+          <span class="label"><strong>Date de Demande:</strong></span>
+          <span class="value">{{selectedDemande.dateDemande}}</span>
+      </div>
+      <div class="detail-item">
+        <span class="label"><strong>Date de Début:</strong></span>
+        <span class="value">{{ selectedDemande.dateDebut | date:'MMM d, y, h:mm a' }}</span>
     </div>
+    <div class="detail-item">
+        <span class="label"><strong>Date de Fin:</strong></span>
+        <span class="value">{{ selectedDemande.dateFin | date:'MMM d, y, h:mm a' }}</span>
+    </div>
+    
+    
+  <div class="detail-item">
+    <span class="label"><strong>Date de Début:</strong></span>
+    <span class="value">{{selectedDemande.motif}}</span>
+</div>
+      <div class="detail-item">
+          <span class="label"><strong>Montant:</strong></span>
+          <span class="value">{{selectedDemande.montant}}</span>
+      </div>
+      <div class="detail-item">
+          <span class="label"><strong>Statut:</strong></span>
+          <span [ngClass]="{
+              'status-rejetee': selectedDemande.statut === 'REJETEE',
+              'status-approuvee': selectedDemande.statut === 'APPROUVEE',
+              'status-en-attente': selectedDemande.statut === 'EN_ATTENTE'
+          }" class="status-label">{{selectedDemande.statut}}</span>
+      </div>
   </div>
+  
+    <p-footer class="dialog-footer">
+      <button pButton type="button"  (click)="approveDemande()" class="button button-success">
+          <span>Approuver</span>
+          <span>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke-miterlimit="2" stroke-linejoin="round" fill-rule="evenodd" clip-rule="evenodd">
+                  <path fill-rule="nonzero" d="M10 17l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"></path>
+              </svg>
+          </span>
+      </button>
+      <button pButton class="button button-danger" (click)="rejectDemande()">
+          <span>Rejeter</span>
+          <span>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke-miterlimit="2" stroke-linejoin="round" fill-rule="evenodd" clip-rule="evenodd"><path fill-rule="nonzero" d="m12.002 2.005c5.518 0 9.998 4.48 9.998 9.997 0 5.518-4.48 9.998-9.998 9.998-5.517 0-9.997-4.48-9.997-9.998 0-5.517 4.48-9.997 9.997-9.997zm0 1.5c-4.69 0-8.497 3.807-8.497 8.497s3.807 8.498 8.497 8.498 8.498-3.808 8.498-8.498-3.808-8.497-8.498-8.497zm0 7.425 2.717-2.718c.146-.146.339-.219.531-.219.404 0 .75.325.75.75 0 .193-.073.384-.219.531l-2.717 2.717 2.727 2.728c.147.147.22.339.22.531 0 .427-.349.75-.75.75-.192 0-.384-.073-.53-.219l-2.729-2.728-2.728 2.728c-.146.146-.338.219-.53.219-.401 0-.751-.323-.751-.75 0-.192.073-.384.22-.531l2.728-2.728-2.722-2.722c-.146-.147-.219-.338-.219-.531 0-.425.346-.749.75-.749.192 0 .385.073.531.219z"></path></svg>
+          </span>
+      </button>
+  </p-footer>
+  
+</p-dialog>
+
+  
+  
+  
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
 </div>

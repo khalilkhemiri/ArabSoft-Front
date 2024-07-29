@@ -1,13 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import Chart from 'chart.js';
-
-// core components
-import {
-  chartOptions,
-  parseOptions,
-  chartExample1,
-  chartExample2
-} from "../../variables/charts";
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-dashboard',
@@ -15,46 +7,64 @@ import {
   styleUrls: ['./dashboard.component.scss']
 })
 export class DashboardComponent implements OnInit {
+  demandes: any[] = [];
+  selectedDemande: any;
+  displayDialog: boolean = false;  
+  demandesEnAttenteCount: number = 0;  
+  demandesDuJour: number = 0;  
 
-  public datasets: any;
-  public data: any;
-  public salesChart;
-  public clicked: boolean = true;
-  public clicked1: boolean = false;
+  constructor(private http: HttpClient) {}
 
   ngOnInit() {
-
-    this.datasets = [
-      [0, 20, 10, 30, 15, 40, 20, 60, 60],
-      [0, 20, 5, 25, 10, 30, 15, 40, 40]
-    ];
-    this.data = this.datasets[0];
-
-
-    var chartOrders = document.getElementById('chart-orders');
-
-    parseOptions(Chart, chartOptions());
-
-
-    var ordersChart = new Chart(chartOrders, {
-      type: 'bar',
-      options: chartExample2.options,
-      data: chartExample2.data
-    });
-
-    var chartSales = document.getElementById('chart-sales');
-
-    this.salesChart = new Chart(chartSales, {
-			type: 'line',
-			options: chartExample1.options,
-			data: chartExample1.data
-		});
+    this.getAllDemandes();
+    this.getDemandesDuJour();
   }
 
-
-  public updateOptions() {
-    this.salesChart.data.datasets[0].data = this.data;
-    this.salesChart.update();
+  getAllDemandes() {
+    this.http.get<any[]>('http://localhost:8083/api/demandes/all').subscribe(
+      data => {
+        this.demandes = data;
+        this.calculateDemandesEnAttente();
+      },
+      error => {
+        console.error('Erreur lors de la récupération des demandes', error);
+      }
+    );
   }
 
+  getDemandesDuJour() {
+    this.http.get<number>('http://localhost:8083/api/demandes/todayNbr').subscribe(
+      data => {
+        this.demandesDuJour = data;
+      },
+      error => {
+        console.error('Erreur lors de la récupération des Nbr du demandes', error);
+      }
+    );
+  }
+
+  openDialog(demande: any) {
+    this.selectedDemande = demande;
+    this.displayDialog = true;
+  }
+
+  closeDialog() {
+    this.displayDialog = false;
+    this.selectedDemande = null;
+  }
+
+  approveDemande() {
+    // Logique pour approuver la demande
+    console.log('Demande approuvée:', this.selectedDemande);
+    this.closeDialog();
+  }
+
+  rejectDemande() {
+    // Logique pour rejeter la demande
+    console.log('Demande rejetée:', this.selectedDemande);
+    this.closeDialog();
+  }
+  calculateDemandesEnAttente() {
+    this.demandesEnAttenteCount = this.demandes.filter(demande => demande.statut === 'EN_ATTENTE').length;
+  }
 }

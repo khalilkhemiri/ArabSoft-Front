@@ -1,0 +1,209 @@
+<div class="header bg-gradient-danger pb-8 pt-5 pt-md-8">
+    <div class="container-fluid">
+      <div class="header-body">
+        <!-- Card stats -->
+        <div class="row">
+          <div class="col-xl-3 col-lg-6">
+            <div class="card card-stats mb-4 mb-xl-0">
+              <div class="card-body">
+                <div class="row">
+                  <div class="col">
+                    <h5 class="card-title text-uppercase text-muted mb-0">Total de demandes du jour </h5>
+                    <span class="h2 font-weight-bold mb-0">{{demandesDuJour}}</span>
+                  </div>
+                  <div class="col-auto">
+                    <div class="icon icon-shape bg-danger text-white rounded-circle shadow">
+                      <i class="fas fa-chart-bar"></i>
+                    </div>
+                  </div>
+                </div>
+                <p class="mt-3 mb-0 text-muted text-sm">
+                  <span class="text-success mr-2"><i class="fa fa-arrow-up"></i> 3.48%</span>
+                  <span class="text-nowrap">Since last month</span>
+                </p>
+              </div>
+            </div>
+          </div>
+          <div class="col-xl-3 col-lg-6">
+            <div class="card card-stats mb-4 mb-xl-0">
+              <div class="card-body">
+                <div class="row">
+                  <div class="col">
+                    <h5 class="card-title text-uppercase text-muted mb-0">users</h5>
+                    <span class="h2 font-weight-bold mb-0">2,356</span>
+                  </div>
+                  <div class="col-auto">
+                    <div class="icon icon-shape bg-warning text-white rounded-circle shadow">
+                      <i class="fas fa-chart-pie"></i>
+                    </div>
+                  </div>
+                </div>
+                <p class="mt-3 mb-0 text-muted text-sm">
+                  <span class="text-danger mr-2"><i class="fas fa-arrow-down"></i> 3.48%</span>
+                  <span class="text-nowrap">Since last week</span>
+                </p>
+              </div>
+            </div>
+          </div>
+          <div class="col-xl-3 col-lg-6">
+            <div class="card card-stats mb-4 mb-xl-0">
+              <div class="card-body">
+                <div class="row">
+                  <div class="col">
+                    <h5 class="card-title text-uppercase text-muted mb-0">Total de demandes en attente</h5>
+                    <span class="h2 font-weight-bold mb-0">{{demandesEnAttenteCount}}</span>
+                  </div>
+                  <div class="col-auto">
+                    <div class="icon icon-shape bg-yellow text-white rounded-circle shadow">
+                      <i class="fas fa-users"></i>
+                    </div>
+                  </div>
+                </div>
+                <p class="mt-3 mb-0 text-muted text-sm">
+                  <span class="text-warning mr-2"><i class="fas fa-arrow-down"></i> 1.10%</span>
+                  <span class="text-nowrap">Since yesterday</span>
+                </p>
+              </div>
+            </div>
+          </div>
+          <div class="col-xl-3 col-lg-6">
+            <div class="card card-stats mb-4 mb-xl-0">
+              <div class="card-body">
+                <div class="row">
+                  <div class="col">
+                    <h5 class="card-title text-uppercase text-muted mb-0">Performance</h5>
+                    <span class="h2 font-weight-bold mb-0">49,65%</span>
+                  </div>
+                  <div class="col-auto">
+                    <div class="icon icon-shape bg-info text-white rounded-circle shadow">
+                      <i class="fas fa-percent"></i>
+                    </div>
+                  </div>
+                </div>
+                <p class="mt-3 mb-0 text-muted text-sm">
+                  <span class="text-success mr-2"><i class="fas fa-arrow-up"></i> 12%</span>
+                  <span class="text-nowrap">Since last month</span>
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="container-fluid mt--7">
+  
+    <div class="card">
+      <h5>Demandes d'Autorisation</h5>
+      <p-table #dt1 [value]="demandes" selectionMode="single"  dataKey="id" [tableStyle]="{'min-width': '50rem'}"
+               [rows]="10" [paginator]="true" stateStorage="session" stateKey="statedemo-session">
+        <ng-template pTemplate="header">
+          <tr>
+            <th pSortableColumn="utilisateur.name" style="width:25%">Utilisateur <p-sortIcon field="utilisateur.name"></p-sortIcon></th>
+            <th pSortableColumn="type" style="width:15%">Type Demande <p-sortIcon field="type"></p-sortIcon></th>
+            <th pSortableColumn="dateDemande" style="width:20%">Date de Demande <p-sortIcon field="dateDemande"></p-sortIcon></th>
+            <th pSortableColumn="montant" style="width:15%">Montant/Motif<p-sortIcon field="montant"></p-sortIcon></th>
+            <th pSortableColumn="statut" style="width:15%">Statut <p-sortIcon field="statut"></p-sortIcon></th>
+          </tr>
+          <tr>
+            <th>
+              <input pInputText type="text" (input)="dt1.filter($event.target.value, 'utilisateur.name', 'contains')" [value]="dt1.filters['utilisateur.name']?.value" placeholder="Search by Utilisateur" class="w-full">
+            </th>
+            <th>
+              <input pInputText type="text" (input)="dt1.filter($event.target.value, 'type', 'contains')" [value]="dt1.filters['type']?.value" placeholder="Search by Type" class="w-full">
+            </th>
+            <th>
+              <input pInputText type="text" (input)="dt1.filter($event.target.value, 'dateDemande', 'contains')" [value]="dt1.filters['dateDemande']?.value" placeholder="Search by Date de Demande" class="w-full">
+            </th>
+            <th>
+              <input pInputText type="text" (input)="dt1.filter($event.target.value, 'montant', 'contains')" [value]="dt1.filters['montant']?.value" placeholder="Search by Montant" class="w-full">
+            </th>
+            <th>
+              <input pInputText type="text" (input)="dt1.filter($event.target.value, 'statut', 'contains')" [value]="dt1.filters['statut']?.value" placeholder="Search by Statut" class="w-full">
+            </th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-demande>
+          <tr [pSelectableRow]="demande">
+            <td>
+              <span class="p-column-title">Utilisateur</span>
+              {{demande.utilisateur.name}}
+            </td>
+            <td>
+              <span class="p-column-title">Type</span>
+              {{demande.type}}
+            </td>
+            <td>
+              <span class="p-column-title">Date de Demande</span>
+              {{demande.dateDemande}}
+            </td>
+            <td>
+              <span class="p-column-title">Montant/Motif</span>
+              {{demande.montant}}              {{demande.motif}}
+
+            </td>
+            <td>
+              <span class="p-column-title">Statut</span>
+              <span [ngClass]="{
+                'status-rejetee': demande.statut === 'REJETEE',
+                'status-approuvee': demande.statut === 'APPROUVEE',
+                'status-en-attente': demande.statut === 'EN_ATTENTE'
+              }">
+                {{demande.statut}}
+              </span>
+            </td>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="emptymessage">
+          <tr>
+            <td colspan="5">Aucune demande trouvée.</td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </div>
+    
+    <p-dialog header="Détails de la Demande"  [modal]="true" [responsive]="true" [style]="{'width': '50vw', 'height': '70vh'}">
+      <div *ngIf="selectedDemande" class="dialog-content">
+        <div class="detail-item">
+            <span class="label"><strong>Utilisateur:</strong></span>
+            <span class="value">{{selectedDemande.utilisateur.name}}</span>
+        </div>
+        <div class="detail-item">
+            <span class="label"><strong>Type:</strong></span>
+            <span class="value">{{selectedDemande.type}}</span>
+        </div>
+        <div class="detail-item">
+            <span class="label"><strong>Date de Demande:</strong></span>
+            <span class="value">{{selectedDemande.dateDemande}}</span>
+        </div>
+        <div class="detail-item">
+          <span class="label"><strong>Date de Début:</strong></span>
+          <span class="value">{{ selectedDemande.dateDebut | date:'MMM d, y, h:mm a' }}</span>
+      </div>
+      <div class="detail-item">
+          <span class="label"><strong>Date de Fin:</strong></span>
+          <span class="value">{{ selectedDemande.dateFin | date:'MMM d, y, h:mm a' }}</span>
+      </div>
+      
+      
+    <div class="detail-item">
+      <span class="label"><strong>Date de Début:</strong></span>
+      <span class="value">{{selectedDemande.motif}}</span>
+  </div>
+        <div class="detail-item">
+            <span class="label"><strong>Montant:</strong></span>
+            <span class="value">{{selectedDemande.montant}}</span>
+        </div>
+        <div class="detail-item">
+            <span class="label"><strong>Statut:</strong></span>
+            <span [ngClass]="{
+                'status-rejetee': selectedDemande.statut === 'REJETEE',
+                'status-approuvee': selectedDemande.statut === 'APPROUVEE',
+                'status-en-attente': selectedDemande.statut === 'EN_ATTENTE'
+            }" class="status-label">{{selectedDemande.statut}}</span>
+        </div>
+    </div>
+    
+  </p-dialog>  
+  </div>
+  

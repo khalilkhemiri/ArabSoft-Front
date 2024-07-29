@@ -1,0 +1,24 @@
+.status-rejetee {
+    background-color: #f44336;
+    color: white;
+    border-radius: 12px;
+    padding: 2px 8px;
+    display: inline-block;
+  }
+  
+  .status-approuvee {
+    background-color: #4caf50;
+    color: white;
+    border-radius: 12px;
+    padding: 2px 8px;
+    display: inline-block;
+  }
+  
+  .status-en-attente {
+    background-color: #ffeb3b;
+    color: black;
+    border-radius: 12px;
+    padding: 2px 8px;
+    display: inline-block;
+  }
+
