@@ -1,0 +1,65 @@
+<div class="header bg-gradient-danger pb-8 pt-5 pt-md-8">
+    
+</div>
+<div class="card container mt--6">
+    <p-table #dt1 [value]="personnels" selectionMode="single" [(selection)]="selectedCustomer1" dataKey="id" [tableStyle]="{'min-width': '50rem'}"
+        [rows]="10" [paginator]="true" stateStorage="session" stateKey="statedemo-session">
+        <ng-template pTemplate="header">
+            <tr>
+                <th pSortableColumn="name" style="width:30%">Nom <p-sortIcon field="name"></p-sortIcon></th>
+                <th pSortableColumn="email" style="width:30%">Email <p-sortIcon field="email"></p-sortIcon></th>
+                <th pSortableColumn="role" style="width:30%">Role <p-sortIcon field="role"></p-sortIcon></th>
+                <th pSortableColumn="number" style="width:30%">Numéro <p-sortIcon field="number"></p-sortIcon></th>
+                <th style="width:30%"></th>
+            </tr>
+            <tr>
+                <th>
+                    <input pInputText type="text" (input)="dt1.filter($event.target.value, 'name', 'contains')" [value]="dt1.filters['name']?.value" placeholder="Rechercher par Nom" class="w-full">
+                </th>
+                <th>
+                    <input pInputText type="text" (input)="dt1.filter($event.target.value, 'email', 'contains')" [value]="dt1.filters['email']?.value" placeholder="Rechercher par Email" class="w-full">
+                </th>
+                <th>
+                    <input pInputText type="text" (input)="dt1.filter($event.target.value, 'role', 'contains')" [value]="dt1.filters['role']?.value" placeholder="Rechercher par Role" class="w-full">
+                </th>
+                <th>
+                    <input pInputText type="text" (input)="dt1.filter($event.target.value, 'number', 'contains')" [value]="dt1.filters['number']?.value" placeholder="Rechercher par Numéro" class="w-full">
+                </th>
+                <th>
+                </th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-customer>
+            <tr [pSelectableRow]="customer">
+                <td>
+                    <span class="p-column-title">Nom</span>
+                    {{customer.name}}
+                </td>
+                <td>
+                    <span class="p-column-title">Email</span>
+                    {{customer.email}}
+                </td>
+                <td>
+                    <span class="p-column-title">Role</span>
+                    {{customer.role}}
+                </td>
+                <td>
+                    <span class="p-column-title">Numéro</span>
+                    {{customer.number}}
+                </td>
+                <td>
+                    <button type="button" class="btn btn-link btn-sm px-3" (click)="unassign(customer.id)" data-mdb-ripple-init data-ripple-color="primary">
+                        <i class="fas fa-times"></i>
+                      </button>
+                </td>
+                
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="emptymessage">
+            <tr>
+                <td colspan="4">Aucun personnel trouvé.</td>
+            </tr>
+        </ng-template>
+    </p-table>
+  </div>
+  

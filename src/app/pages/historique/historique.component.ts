@@ -17,13 +17,23 @@ export class HistoriqueComponent implements OnInit {
   constructor(private http: HttpClient , private AuthService : AuthService) {}
 
   ngOnInit(): void {
-    this.getDemandesByUtilisateurId();
+    this.AuthService.getUserId().subscribe(
+      (userId) => {
+    this.http.get<any[]>(`http://localhost:8083/api/demandes/user/${userId}`).subscribe(
+      data => {
+        this.demandes = data;
+      },
+      error => {
+        console.error('Erreur lors de la récupération des demandes par utilisateur', error);
+      }
+    );
+  })
   }
 
   getDemandesByUtilisateurId() {
     this.AuthService.getUserId().subscribe(
       (userId) => {
-    this.http.get<any[]>(`http://localhost:8083/api/demandes/user/${userId}`).subscribe(
+    this.http.get<any[]>(`http://localhost:8083/api/demandes/user/${5}`).subscribe(
       data => {
         this.demandes = data;
       },

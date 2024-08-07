@@ -34,13 +34,21 @@ export class LoginComponent implements OnInit {
             localStorage.setItem('token', response.token);
             localStorage.setItem('user', JSON.stringify(response.users));  
             const userId = response.users.id;
-
+            const userRole = response.users.role;
             this.authService.setUserId(userId);
 
             console.log(response.users)
+            console.log(this.authService.getUserId())
 
-            this.router.navigate(['/dashboard']);
-          } else {
+            if (userRole === 'ADMIN') {
+              this.router.navigate(['/dashboard']);   
+            } else if (userRole === 'CHEF') {
+              this.router.navigate(['/dashchef']);
+            } else if (userRole === 'PERSONNEL') {
+              this.router.navigate(['/historique']);
+            } else {
+              this.router.navigate(['/default']); 
+            }          } else {
             this.errorMessage = response.message || 'Login failed';
           }
         },

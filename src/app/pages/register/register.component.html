@@ -15,7 +15,7 @@
     <div class="col-lg-6 col-md-8">
       <div class="card bg-secondary shadow border-0">
         <div class="card-header bg-transparent pb-5">
-          <div class="text-muted text-center mt-2 mb-2"><small style="color: #000000;">Sign up</small></div>
+          <div class="text-muted text-center mt-2 mb-1"><h2 style="color: #000000;">Sign up</h2></div>
         </div>
         <div class="card-body px-lg-5 py-lg-5">
           <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
@@ -38,7 +38,7 @@
             <div class="form-group">
               <div class="input-group input-group-alternative mb-3">
                 <div class="input-group-prepend">
-                  <span class="input-group-text"><i class="ni ni-phone-66"></i></span>
+                  <span class="input-group-text"><i class="fa fa-phone"></i></span>
                 </div>
                 <input class="form-control" placeholder="Phone Number" type="tel" formControlName="number">
               </div>

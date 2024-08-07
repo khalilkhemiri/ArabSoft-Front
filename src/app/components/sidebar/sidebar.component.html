@@ -7,7 +7,7 @@
     </button>
     <!-- Brand -->
     <a class="navbar-brand pt-0" routerLinkActive="active" [routerLink]="['/dashboard']">
-      <img src="./assets/img/brand/red.png" class="navbar-brand-img" alt="...">
+      <img src="./assets/img/brand/arabsoft.png" class="navbar-brand-img" alt="...">
     </a>
     <!-- User -->
     <ul class="nav align-items-center d-md-none">
@@ -96,14 +96,48 @@
               </a>
           </li>
       </ul>
-      <ul class="navbar-nav" *ngIf="user.role === 'PERSONNEL'" >
-        <li *ngFor="let menuItem of personel" class="{{menuItem.class}} nav-item">
-            <a routerLinkActive="active" [routerLink]="[menuItem.path]" class="nav-link">
-                <i class="ni {{menuItem.icon}}"></i>
-                {{menuItem.title}}
-            </a>
+
+
+
+      <ul class="navbar-nav" *ngIf="user.role === 'CHEF'">
+        <li *ngFor="let menuItem of chef" class="{{menuItem.class}} nav-item">
+          <a (click)="toggleMenu(menuItem)" class="nav-link">
+            <i class="ni {{menuItem.icon}}"></i>
+            {{menuItem.title}}
+          </a>
+          <ul *ngIf="menuItem.children && menuItem.isOpen">
+            <li *ngFor="let child of menuItem.children" class="{{child.class}} nav-item">
+              <a routerLinkActive="active" [routerLink]="[child.path]" class="nav-link">
+                <i class="ni {{child.icon}}"></i>
+                {{child.title}}
+              </a>
+            </li>
+          </ul>
         </li>
+      </ul>
+      
+
+
+
+
+     <ul class="navbar-nav" *ngIf="user.role === 'PERSONNEL'">
+  <li *ngFor="let menuItem of personel" class="{{menuItem.class}} nav-item">
+    <a (click)="toggleMenu(menuItem)" class="nav-link">
+      <i class="ni {{menuItem.icon}}"></i>
+      {{menuItem.title}}
+    </a>
+    <ul *ngIf="menuItem.children && menuItem.isOpen">
+      <li *ngFor="let child of menuItem.children" class="{{child.class}} nav-item">
+        <a routerLinkActive="active" [routerLink]="[child.path]" class="nav-link">
+          <i class="ni {{child.icon}}"></i>
+          {{child.title}}
+        </a>
+      </li>
     </ul>
+  </li>
+</ul>
+
+      
       <!-- Divider -->
       <hr class="my-3">
       <!-- Heading -->

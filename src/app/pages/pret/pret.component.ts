@@ -13,7 +13,7 @@ import { ConfirmationService, ConfirmEventType } from 'primeng/api';
 export class PretComponent implements OnInit {
   user: any;
   loanRequest: LoanRequest;
-  selectedType: string = 'pret'; // Par défaut "pret"
+  selectedType: string = 'PRET'; // Par défaut "pret"
 
   constructor(
     private loanRequestService: PretService,
@@ -21,7 +21,7 @@ export class PretComponent implements OnInit {
   ) {
     this.loanRequest = {
       montant: 0,
-      utilisateurId: 0,
+      utilisateurId: null,
       type: ''
     };
   }

@@ -1,0 +1,215 @@
+<div class="header bg-gradient-danger pb-8 pt-5 pt-md-8">
+  <div class="container-fluid">
+    <div class="header-body">
+      <!-- Card stats -->
+      <div class="row">
+        <div class="col-xl-3 col-lg-6">
+          <div class="card card-stats mb-4 mb-xl-0">
+            <div class="card-body">
+              <div class="row">
+                <div class="col">
+                  <h5 class="card-title text-uppercase text-muted mb-0">Total de demandes du jour </h5>
+                  <span class="h2 font-weight-bold mb-0">{{demandesDuJour}}</span>
+                </div>
+                <div class="col-auto">
+                  <div class="icon icon-shape bg-danger text-white rounded-circle shadow">
+                    <i class="fas fa-chart-bar"></i>
+                  </div>
+                </div>
+              </div>
+            
+            </div>
+          </div>
+        </div>
+        <div class="col-xl-3 col-lg-6">
+          <div class="card card-stats mb-4 mb-xl-0">
+            <div class="card-body">
+              <div class="row">
+                <div class="col">
+                  <h5 class="card-title text-uppercase text-muted mb-0">users</h5>
+                  <span class="h2 font-weight-bold mb-0">2,356</span>
+                </div>
+                <div class="col-auto">
+                  <div class="icon icon-shape bg-warning text-white rounded-circle shadow">
+                    <i class="fas fa-chart-pie"></i>
+                  </div>
+                </div>
+              </div>
+              
+            </div>
+          </div>
+        </div>
+        <div class="col-xl-3 col-lg-6">
+          <div class="card card-stats mb-4 mb-xl-0">
+            <div class="card-body">
+              <div class="row">
+                <div class="col">
+                  <h5 class="card-title text-uppercase text-muted mb-0">Total de demandes en attente</h5>
+                  <span class="h2 font-weight-bold mb-0">{{demandesEnAttenteCount}}</span>
+                </div>
+                <div class="col-auto">
+                  <div class="icon icon-shape bg-yellow text-white rounded-circle shadow">
+                    <i class="fas fa-users"></i>
+                  </div>
+                </div>
+              </div>
+              
+            </div>
+          </div>
+        </div>
+        <div class="col-xl-3 col-lg-6">
+          <div class="card card-stats mb-4 mb-xl-0">
+            <div class="card-body">
+              <div class="row">
+                <div class="col">
+                  <h5 class="card-title text-uppercase text-muted mb-0">Performance</h5>
+                  <span class="h2 font-weight-bold mb-0">49,65%</span>
+                </div>
+                <div class="col-auto">
+                  <div class="icon icon-shape bg-info text-white rounded-circle shadow">
+                    <i class="fas fa-percent"></i>
+                  </div>
+                </div>
+              </div>
+             
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container-fluid mt--7">
+
+  <div class="card">
+    <p-table
+      #dt1
+      [value]="demandes"
+      selectionMode="single"
+      (onRowSelect)="openDialog($event.data)"
+      dataKey="id"
+      [tableStyle]="{'min-width': '50rem'}"
+      [rows]="10"
+      [paginator]="true"
+      stateStorage="session"
+      stateKey="statedemo-session"
+    >
+      <ng-template pTemplate="header">
+        <tr>
+          <th pSortableColumn="utilisateur.name" style="width:25%">Utilisateur <p-sortIcon field="utilisateur.name"></p-sortIcon></th>
+          <th pSortableColumn="type" style="width:15%">Type Demande <p-sortIcon field="type"></p-sortIcon></th>
+          <th pSortableColumn="dateDemande" style="width:20%">Date de Demande <p-sortIcon field="dateDemande"></p-sortIcon></th>
+          <th pSortableColumn="montant" style="width:15%">Montant/Motif <p-sortIcon field="montant"></p-sortIcon></th>
+          <th pSortableColumn="statut" style="width:30%">Statut <p-sortIcon field="statut"></p-sortIcon></th>
+          <th style="width:10%">Actions</th>
+        </tr>
+        <tr>
+          <th><input pInputText type="text" (input)="dt1.filter($event.target.value, 'utilisateur.name', 'contains')" [value]="dt1.filters['utilisateur.name']?.value" placeholder="Search by Utilisateur" class="w-full search-input"></th>
+          <th><input pInputText type="text" (input)="dt1.filter($event.target.value, 'type', 'contains')" [value]="dt1.filters['type']?.value" placeholder="Search by Type" class="w-full search-input"></th>
+          <th><input pInputText type="text" (input)="dt1.filter($event.target.value, 'dateDemande', 'contains')" [value]="dt1.filters['dateDemande']?.value" placeholder="Search by Date de Demande" class="w-full search-input"></th>
+          <th><input pInputText type="text" (input)="dt1.filter($event.target.value, 'montant', 'contains')" [value]="dt1.filters['montant']?.value" placeholder="Search by Montant" class="w-full search-input"></th>
+          <th><input pInputText type="text" (input)="dt1.filter($event.target.value, 'statut', 'contains')" [value]="dt1.filters['statut']?.value" placeholder="Search by Statut" class="w-full search-input"></th>
+          <th></th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-demande>
+        <tr [pSelectableRow]="demande">
+          <td><span class="p-column-title">Utilisateur</span>{{demande.utilisateur.name}}</td>
+          <td><span class="p-column-title">Type</span>{{demande.type}}</td>
+          <td><span class="p-column-title">Date de Demande</span>{{demande.dateDemande}}</td>
+          <td><span class="p-column-title">Montant</span>{{demande.montant}} {{demande.motif}}</td>
+          <td>
+            <span class="p-column-title">Statut</span>
+            <span [ngClass]="{'status-rejetee': demande.statut === 'REJETEE', 'status-approuvee': demande.statut === 'APPROUVEE', 'status-en-attente': demande.statut === 'EN_ATTENTE'}">
+              {{demande.statut}}
+            </span>
+          </td>
+          <td>
+            <button class="Btn"(click)="generatePdf(demande.utilisateur.id)">
+              <svg
+                class="svgIcon"
+                viewBox="0 0 384 512"
+                height="1em"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M169.4 470.6c12.5 12.5 32.8 12.5 45.3 0l160-160c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L224 370.8 224 64c0-17.7-14.3-32-32-32s-32 14.3-32 32l0 306.7L54.6 265.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l160 160z"
+                ></path>
+              </svg>
+              
+              <span class="icon2"></span>
+              <span class="tooltip">Attestation de Travail</span>
+            </button>
+            
+          </td>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="emptymessage">
+        <tr><td colspan="6">Aucune demande trouvée.</td></tr>
+      </ng-template>
+    </p-table>
+  </div>
+  
+    
+    <p-dialog header="Détails de la Demande" [(visible)]="displayDialog" [modal]="true" [responsive]="true" [style]="{'width': '50vw', 'height': '70vh'}">
+      <div *ngIf="selectedDemande" class="dialog-content">
+        <div class="detail-item">
+            <span class="label"><strong>Utilisateur:</strong></span>
+            <span class="value">{{selectedDemande.utilisateur.name}}</span>
+        </div>
+        <div class="detail-item">
+            <span class="label"><strong>Type:</strong></span>
+            <span class="value">{{selectedDemande.type}}</span>
+        </div>
+        <div class="detail-item">
+            <span class="label"><strong>Date de Demande:</strong></span>
+            <span class="value">{{selectedDemande.dateDemande}}</span>
+        </div>
+        <div class="detail-item">
+          <span class="label"><strong>Date de Début:</strong></span>
+          <span class="value">{{ selectedDemande.dateDebut | date:'MMM d, y, h:mm a' }}</span>
+      </div>
+      <div class="detail-item">
+          <span class="label"><strong>Date de Fin:</strong></span>
+          <span class="value">{{ selectedDemande.dateFin | date:'MMM d, y, h:mm a' }}</span>
+      </div>
+      
+      
+    <div class="detail-item">
+      <span class="label"><strong>Date de Début:</strong></span>
+      <span class="value">{{selectedDemande.motif}}</span>
+  </div>
+        <div class="detail-item">
+            <span class="label"><strong>Montant:</strong></span>
+            <span class="value">{{selectedDemande.montant}}</span>
+        </div>
+        <div class="detail-item">
+            <span class="label"><strong>Statut:</strong></span>
+            <span [ngClass]="{
+                'status-rejetee': selectedDemande.statut === 'REJETEE',
+                'status-approuvee': selectedDemande.statut === 'APPROUVEE',
+                'status-en-attente': selectedDemande.statut === 'EN_ATTENTE'
+            }" class="status-label">{{selectedDemande.statut}}</span>
+        </div>
+    </div>
+    
+      <p-footer class="dialog-footer">
+        <button pButton type="button"  (click)="approveDemande()" class="button button-success">
+            <span>Approuver</span>
+            <span>
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke-miterlimit="2" stroke-linejoin="round" fill-rule="evenodd" clip-rule="evenodd">
+                    <path fill-rule="nonzero" d="M10 17l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"></path>
+                </svg>
+            </span>
+        </button>
+        <button pButton class="button button-danger" (click)="rejectDemande()">
+            <span>Rejeter</span>
+            <span>
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke-miterlimit="2" stroke-linejoin="round" fill-rule="evenodd" clip-rule="evenodd"><path fill-rule="nonzero" d="m12.002 2.005c5.518 0 9.998 4.48 9.998 9.997 0 5.518-4.48 9.998-9.998 9.998-5.517 0-9.997-4.48-9.997-9.998 0-5.517 4.48-9.997 9.997-9.997zm0 1.5c-4.69 0-8.497 3.807-8.497 8.497s3.807 8.498 8.497 8.498 8.498-3.808 8.498-8.498-3.808-8.497-8.498-8.497zm0 7.425 2.717-2.718c.146-.146.339-.219.531-.219.404 0 .75.325.75.75 0 .193-.073.384-.219.531l-2.717 2.717 2.727 2.728c.147.147.22.339.22.531 0 .427-.349.75-.75.75-.192 0-.384-.073-.53-.219l-2.729-2.728-2.728 2.728c-.146.146-.338.219-.53.219-.401 0-.751-.323-.751-.75 0-.192.073-.384.22-.531l2.728-2.728-2.722-2.722c-.146-.147-.219-.338-.219-.531 0-.425.346-.749.75-.749.192 0 .385.073.531.219z"></path></svg>
+            </span>
+        </button>
+    </p-footer>
+    
+  </p-dialog>
+  
+  </div>
