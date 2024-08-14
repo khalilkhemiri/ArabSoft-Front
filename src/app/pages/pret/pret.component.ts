@@ -13,7 +13,7 @@ import { ConfirmationService, ConfirmEventType } from 'primeng/api';
 export class PretComponent implements OnInit {
   user: any;
   loanRequest: LoanRequest;
-  selectedType: string = 'PRET'; // Par défaut "pret"
+  selectedType: string = 'PRET'; 
 
   constructor(
     private loanRequestService: PretService,
@@ -51,7 +51,7 @@ export class PretComponent implements OnInit {
 
   onSubmit(form: NgForm) {
     if (form.valid) {
-      this.loanRequest.type = this.selectedType; // Assigner le type sélectionné
+      this.loanRequest.type = this.selectedType; 
       this.loanRequestService.submitLoanRequest(this.loanRequest).subscribe(response => {
         console.log('Demande de prêt soumise avec succès', response);
       }, error => {

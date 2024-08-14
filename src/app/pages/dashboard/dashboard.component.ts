@@ -1,10 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { MessageService } from 'primeng/api';
+import { AuthService } from 'src/app/services/Auth/auth.service';
 
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
-  styleUrls: ['./dashboard.component.scss']
+  styleUrls: ['./dashboard.component.scss'],
+  providers: [MessageService]
+
 })
 export class DashboardComponent implements OnInit {
   demandes: any[] = [];
@@ -13,7 +17,7 @@ export class DashboardComponent implements OnInit {
   demandesEnAttenteCount: number = 0;  
   demandesDuJour: number = 0;  
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient,private messageService: MessageService,  private demandeService: AuthService) {}
 
   ngOnInit() {
     this.getAllDemandes();
@@ -56,16 +60,57 @@ export class DashboardComponent implements OnInit {
   }
 
   approveDemande() {
-    // Logique pour approuver la demande
-    console.log('Demande approuvée:', this.selectedDemande);
-    this.closeDialog();
+    if (this.selectedDemande && this.selectedDemande.id && this.selectedDemande.type) {
+      this.demandeService
+        .approuverDemande(this.selectedDemande.id, this.selectedDemande.type)
+        .subscribe(
+          (response) => {
+            this.messageService.add({
+              severity: 'success',
+              summary: 'Succès',
+              detail: 'Demande approuvée avec succès',
+            });
+            this.selectedDemande.statut = 'APPROUVEE';
+            this.displayDialog = false;
+            
+          },
+          (error) => {
+            this.messageService.add({
+              severity: 'error',
+              summary: 'Erreur',
+              detail: 'Erreur lors de l\'approbation de la demande',
+            });
+          }
+        );
+    }
   }
-
+  
   rejectDemande() {
-    // Logique pour rejeter la demande
-    console.log('Demande rejetée:', this.selectedDemande);
-    this.closeDialog();
-  }
+    if (this.selectedDemande && this.selectedDemande.id && this.selectedDemande.type) {
+      this.demandeService
+        .rejeterDemande(this.selectedDemande.id, this.selectedDemande.type)
+        .subscribe(
+          (response) => {
+            console.log('Réponse:', response);
+            this.messageService.add({
+              severity: 'success',
+              summary: 'Succès',
+              detail: 'Demande rejetée avec succès',
+            });
+            this.selectedDemande.statut = 'REJETEE';
+            this.displayDialog = false;
+          },
+          (error) => {
+            console.error('Erreur:', error);
+            this.messageService.add({
+              severity: 'error',
+              summary: 'Erreur',
+              detail: 'Erreur lors du rejet de la demande',
+            });
+          }
+        );
+    }}
+  
   calculateDemandesEnAttente() {
     this.demandesEnAttenteCount = this.demandes.filter(demande => demande.statut === 'EN_ATTENTE').length;
   }

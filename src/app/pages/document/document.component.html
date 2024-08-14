@@ -9,11 +9,11 @@
     <div class="card-body">
       <form (ngSubmit)="onSubmit()">
         <div class="form-group">
-          <label for="motif">Motif</label>
+          <h5 for="motif">Motif</h5>
           <input type="text" id="motif" class="form-control" [(ngModel)]="document.motif" name="motif" required />
         </div>
         <div class="form-group">
-          <label>Type de Document</label>
+          <h5>Type de Document</h5>
           <div class="checkbox-wrapper-15" *ngFor="let type of documentTypes">
             <input class="inp-cbx" id="{{type}}" type="checkbox" style="display: none;" [(ngModel)]="selectedTypes[type]" name="type" />
             <label class="cbx" for="{{type}}">

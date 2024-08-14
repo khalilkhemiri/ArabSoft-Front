@@ -1,0 +1,28 @@
+<div class="header bg-gradient-danger pb-8 pt-5 pt-md-8">
+    
+</div>
+<p-toast></p-toast>
+<p-confirmDialog></p-confirmDialog>
+<div class="container mt--6">
+  <div class="card">
+    <div class="card-header">
+      <h3 class="card-title">Demande de Changement Situation</h3>
+    </div>
+    <div class="card-body">
+      <form [formGroup]="congeForm" (ngSubmit)="onSubmit()">
+        <div class="form-group">
+          <h5 for="nouvelleSituation">Nouvelle Situation</h5>
+          <input id="nouvelleSituation" formControlName="nouvelleSituation" class="form-control" placeholder="nouvelle Situation de la demande">
+        </div>
+
+       
+
+        <button type="submit" class="btn btn-primary" [disabled]="!congeForm.valid">Soumettre</button>
+      </form>
+    </div>
+  </div>
+</div>
+
+
+
+  

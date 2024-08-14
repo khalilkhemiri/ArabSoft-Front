@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Customer, Representative, UserProfile } from 'src/app/Model/test'; // Ajustez le chemin selon votre projet
+import { Customer, Representative, UserProfile } from 'src/app/Model/test'; 
 import { MessageService } from "primeng/api";
 import { AuthService } from 'src/app/services/Auth/auth.service';
 

@@ -1,15 +1,99 @@
+<p-confirmDialog></p-confirmDialog>
+
 <div class="header bg-gradient-danger pb-8 pt-5 pt-md-8">
-    
+    <div class="container-fluid">
+        <div class="header-body">
+          <!-- Card stats -->
+          <div class="row">
+            <div class="col-xl-3 col-lg-6">
+              <div class="card card-stats mb-4 mb-xl-0">
+                <div class="card-body">
+                  <div class="row">
+                    <div class="col">
+                      <h5 class="card-title text-uppercase text-muted mb-0">Nombre des Personnels </h5>
+                      <span class="h2 font-weight-bold mb-0">{{personnel}}</span>
+                    </div>
+                    <div class="col-auto">
+                      <div class="icon icon-shape bg-danger text-white rounded-circle shadow">
+                        <i class="fas fa-chart-bar"></i>
+                      </div>
+                    </div>
+                  </div>
+                
+                </div>
+              </div>
+            </div>
+            <div class="col-xl-3 col-lg-6">
+              <div class="card card-stats mb-4 mb-xl-0">
+                <div class="card-body">
+                  <div class="row">
+                    <div class="col">
+                      <h5 class="card-title text-uppercase text-muted mb-0">users</h5>
+                      <span class="h2 font-weight-bold mb-0">2,356</span>
+                    </div>
+                    <div class="col-auto">
+                      <div class="icon icon-shape bg-warning text-white rounded-circle shadow">
+                        <i class="fas fa-chart-pie"></i>
+                      </div>
+                    </div>
+                  </div>
+                  
+                </div>
+              </div>
+            </div>
+            <div class="col-xl-3 col-lg-6">
+              <div class="card card-stats mb-4 mb-xl-0">
+                <div class="card-body">
+                  <div class="row">
+                    <div class="col">
+                      <h5 class="card-title text-uppercase text-muted mb-0">Total de demandes en attente</h5>
+                      <span class="h2 font-weight-bold mb-0"></span>
+                    </div>
+                    <div class="col-auto">
+                      <div class="icon icon-shape bg-yellow text-white rounded-circle shadow">
+                        <i class="fas fa-users"></i>
+                      </div>
+                    </div>
+                  </div>
+                  
+                </div>
+              </div>
+            </div>
+            <div class="col-xl-3 col-lg-6">
+              <div class="card card-stats mb-4 mb-xl-0">
+                <div class="card-body">
+                  <div class="row">
+                    <div class="col">
+                      <h5 class="card-title text-uppercase text-muted mb-0">Performance</h5>
+                      <span class="h2 font-weight-bold mb-0">49,65%</span>
+                    </div>
+                    <div class="col-auto">
+                      <div class="icon icon-shape bg-info text-white rounded-circle shadow">
+                        <i class="fas fa-percent"></i>
+                      </div>
+                    </div>
+                  </div>
+                 
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
 </div>
 <div class="card container mt--6">
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h2>Gestion des Personnels</h2>
+    <button type="button" class="btn btn-primary" (click)="createMeeting()">Créer un Meeting</button>
+</div>
     <p-table #dt1 [value]="personnels" selectionMode="single" [(selection)]="selectedCustomer1" dataKey="id" [tableStyle]="{'min-width': '50rem'}"
         [rows]="10" [paginator]="true" stateStorage="session" stateKey="statedemo-session">
         <ng-template pTemplate="header">
             <tr>
                 <th pSortableColumn="name" style="width:30%">Nom <p-sortIcon field="name"></p-sortIcon></th>
                 <th pSortableColumn="email" style="width:30%">Email <p-sortIcon field="email"></p-sortIcon></th>
-                <th pSortableColumn="role" style="width:30%">Role <p-sortIcon field="role"></p-sortIcon></th>
                 <th pSortableColumn="number" style="width:30%">Numéro <p-sortIcon field="number"></p-sortIcon></th>
+                <th pSortableColumn="role" style="width:30%">En Ligne <p-sortIcon field="online"></p-sortIcon></th>
                 <th style="width:30%"></th>
             </tr>
             <tr>
@@ -20,10 +104,10 @@
                     <input pInputText type="text" (input)="dt1.filter($event.target.value, 'email', 'contains')" [value]="dt1.filters['email']?.value" placeholder="Rechercher par Email" class="w-full">
                 </th>
                 <th>
-                    <input pInputText type="text" (input)="dt1.filter($event.target.value, 'role', 'contains')" [value]="dt1.filters['role']?.value" placeholder="Rechercher par Role" class="w-full">
-                </th>
+                  <input pInputText type="text" (input)="dt1.filter($event.target.value, 'number', 'contains')" [value]="dt1.filters['number']?.value" placeholder="Rechercher par Numéro" class="w-full">
+              </th>
                 <th>
-                    <input pInputText type="text" (input)="dt1.filter($event.target.value, 'number', 'contains')" [value]="dt1.filters['number']?.value" placeholder="Rechercher par Numéro" class="w-full">
+                    <input pInputText type="text" (input)="dt1.filter($event.target.value, 'online', 'contains')" [value]="dt1.filters['online']?.value" placeholder="Rechercher par En Ligne" class="w-full">
                 </th>
                 <th>
                 </th>
@@ -40,15 +124,23 @@
                     {{customer.email}}
                 </td>
                 <td>
-                    <span class="p-column-title">Role</span>
-                    {{customer.role}}
-                </td>
-                <td>
                     <span class="p-column-title">Numéro</span>
                     {{customer.number}}
                 </td>
                 <td>
-                    <button type="button" class="btn btn-link btn-sm px-3" (click)="unassign(customer.id)" data-mdb-ripple-init data-ripple-color="primary">
+                  <span class="p-column-title">Online</span>
+                  <span 
+                      *ngIf="customer.online; else offline"
+                      style="display: inline-block; width: 10px; height: 10px; border-radius: 50%; background-color: green;">
+                  </span>
+                  <ng-template #offline>
+                      <span 
+                          style="display: inline-block; width: 10px; height: 10px; border-radius: 50%; background-color: red;">
+                      </span>
+                  </ng-template>
+              </td>
+                <td>
+                    <button type="button" class="btn btn-link btn-sm px-3" (click)="confirmUnassign(customer.id)" data-mdb-ripple-init data-ripple-color="primary">
                         <i class="fas fa-times"></i>
                       </button>
                 </td>
@@ -62,4 +154,3 @@
         </ng-template>
     </p-table>
   </div>
-  

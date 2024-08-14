@@ -83,7 +83,7 @@
 
   <div class="card">
     <p-table #dt1 [value]="demandes" selectionMode="single" (onRowSelect)="openDialog($event.data)" dataKey="id" [tableStyle]="{'min-width': '50rem'}"
-             [rows]="10" [paginator]="true" stateStorage="session" stateKey="statedemo-session">
+             [rows]="7" [paginator]="true" stateStorage="session" stateKey="statedemo-session">
       <ng-template pTemplate="header">
         <tr>
           <th pSortableColumn="utilisateur.name" style="width:25%">Utilisateur <p-sortIcon field="utilisateur.name"></p-sortIcon></th>
@@ -128,7 +128,7 @@
             <span class="p-column-title">Montant</span>
             {{demande.montant}}
             {{demande.motif}}
-
+            {{demande.nouvelleSituation}}
           </td>
           <td>
             <span class="p-column-title">Statut</span>
@@ -149,7 +149,8 @@
       </ng-template>
     </p-table>
   </div>
-  
+  <app-icons></app-icons>
+
   <p-dialog header="Détails de la Demande" [(visible)]="displayDialog" [modal]="true" [responsive]="true" [style]="{'width': '50vw', 'height': '70vh'}">
     <div *ngIf="selectedDemande" class="dialog-content">
       <div class="detail-item">
@@ -210,6 +211,8 @@
   </p-footer>
   
 </p-dialog>
+<p-toast></p-toast>
+
 
   
   

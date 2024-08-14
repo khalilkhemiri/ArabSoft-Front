@@ -10,17 +10,17 @@
       <form #autorisationForm="ngForm" (ngSubmit)="submitAutorisation(autorisationForm)">
         
         <div class="form-group">
-          <label for="motif">Motif</label>
+          <h5 for="motif">Motif</h5>
           <input type="text" class="form-control" id="motif" name="motif" [(ngModel)]="autorisation.motif" required>
         </div>
 
         <div class="form-group">
-          <label for="dateDebut">Date de Début</label>
+          <h5 for="dateDebut">Date de Début</h5>
           <p-calendar [(ngModel)]="autorisation.dateDebut" name="dateDebut" showTime="true" [hourFormat]="24" required></p-calendar>
         </div>
 
         <div class="form-group">
-          <label for="dateFin">Date de Fin</label>
+          <h5 for="dateFin">Date de Fin</h5>
           <p-calendar [(ngModel)]="autorisation.dateFin" name="dateFin" showTime="true" [hourFormat]="24" required></p-calendar>
         </div>
 

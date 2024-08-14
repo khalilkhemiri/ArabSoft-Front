@@ -24,6 +24,9 @@ import {ButtonModule} from 'primeng/button';
 import {DropdownModule} from 'primeng/dropdown';
 import {ProgressBarModule} from 'primeng/progressbar';
 import {InputTextModule} from 'primeng/inputtext';
+import { ChartModule } from 'primeng/chart';
+import { ConfirmationService } from 'primeng/api';
+
 @NgModule({
   imports: [
     CommonModule,
@@ -42,7 +45,8 @@ import {InputTextModule} from 'primeng/inputtext';
     MultiSelectModule,
     SliderModule,
     CalendarModule,
-    ToastModule
+    ToastModule,
+    ChartModule,
   ],
   declarations: [
     DashboardComponent,
@@ -50,7 +54,9 @@ import {InputTextModule} from 'primeng/inputtext';
     TablesComponent,
     IconsComponent,
     MapsComponent
-  ]
+  ],
+  providers: [ConfirmationService],
+
 })
 
 export class AdminLayoutModule {}

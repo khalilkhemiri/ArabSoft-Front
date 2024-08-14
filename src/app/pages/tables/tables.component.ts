@@ -100,7 +100,7 @@ export class TablesComponent implements OnInit {
   assignPersonnelToChef(userId: number, chefId: number): void {
     this.userProfileService.assignPersonnelToChef(userId, chefId).subscribe(() => {
       this.loadUsers();
-      this.loadPersonnelCount(); // Mettre à jour le nombre de personnels après l'affectation
+      this.loadPersonnelCount(); 
     });
   }
 }

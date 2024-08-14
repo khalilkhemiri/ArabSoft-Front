@@ -1,13 +1,13 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { catchError, Observable, throwError } from 'rxjs';
-import { Customer } from 'src/app/Model/test';
+import { Observable, catchError, throwError } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
-export class CongeService {
-  private baseUrl = 'http://localhost:8083/conges/demande'; 
+export class SituationService {
+
+  private baseUrl = 'http://localhost:8083/situation/demande'; 
   
   constructor(private http: HttpClient) { }
   AddConge(data: any): Observable<any> {
@@ -19,14 +19,4 @@ export class CongeService {
         })
       );
   }
-    
-    
-
-    
- async getCustomersLarge() {
-        const res = await this.http.get<any>('assets/data.json')
-         .toPromise();
-     const data = <Customer[]>res.data;
-     return data;
-    }
-};
+}

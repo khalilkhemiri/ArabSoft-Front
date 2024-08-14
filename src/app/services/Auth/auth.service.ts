@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpParams, HttpResponse } from '@angular/common/http';
 import {BehaviorSubject, Observable, tap } from 'rxjs';
 import { UserProfile } from 'src/app/Model/test';
 
@@ -7,7 +7,7 @@ import { UserProfile } from 'src/app/Model/test';
   providedIn: 'root'
 })
 export class AuthService {
-  private baseUrl = 'http://localhost:8083'; // Remplacez par l'URL de votre backend
+  private baseUrl = 'http://localhost:8083'; 
 
   constructor(private http: HttpClient) { }
 
@@ -21,11 +21,11 @@ export class AuthService {
   getUserId(): Observable<number | null> {
     return this.userId$;
   }
-  public isLoggedIn(){
-    return this.getUserId !== null ; 
+  public isLoggedIn(): boolean {
+    return this.userIdSubject.value !== null;
   }
-  public logout(){
-    return this.getUserId == null ;  
+  public logout(): void {
+    this.setUserId(null);
   }
 
 
@@ -44,8 +44,7 @@ export class AuthService {
         observer.complete();
       });
     }
-  
-    // Assurez-vous d'inclure un objet options, même s'il est vide
+  this.setUserId(null);
     return this.http.post(`${this.baseUrl}/signout/${userId}`, null);
   }
   
@@ -74,4 +73,41 @@ export class AuthService {
     return this.http.put<any>(`http://localhost:8083/unassign/${personnelId}`, {});
   }
   
+  getDemandesParMois(): Observable<any> {
+    return this.http.get<any>(`http://localhost:8083/api/demandes/par-mois`);
+  }
+  getDemandesParMoisApprouvez(): Observable<any> {
+    return this.http.get<any>(`http://localhost:8083/api/demandes/par-mois-approuvez`);
+  }
+
+  countPersonnelByChef(idchef: number): Observable<number> {
+    return this.http.get<number>(`${this.baseUrl}/personnel/count/${idchef}`);
+  }
+  sendMeetingLinkToEmployees(chefId: number, meetingUrl: string): Observable<any> {
+    const params = new HttpParams()
+        .set('chefHierarchiqueId', chefId.toString())
+        .set('meetingLink', meetingUrl);
+        
+    return this.http.post(`${this.baseUrl}/sendMeetingLink`, null, { params });
+}
+
+
+
+
+approuverDemande(demandeId: number, typeDemande: string): Observable<HttpResponse<any>> {
+  const params = new HttpParams()
+    .set('demandeId', demandeId.toString())
+    .set('typeDemande', typeDemande);
+
+  return this.http.put<HttpResponse<any>>('http://localhost:8083/api/demandes/approuver', {}, { observe: 'response', params });
+}
+
+rejeterDemande(demandeId: number, typeDemande: string): Observable<any> {
+  return this.http.put(`http://localhost:8083/api/demandes/rejeter`, null, {
+    params: {
+      demandeId: demandeId.toString(),
+      typeDemande: typeDemande
+    }
+  });
+}
 }

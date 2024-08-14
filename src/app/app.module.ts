@@ -33,11 +33,14 @@ import { ButtonModule } from 'primeng/button';
 import { HistoriqueComponent } from './pages/historique/historique.component';
 import {ToastModule} from 'primeng/toast';
 import { MenuModule } from 'primeng/menu';
-
+import { ChartModule } from 'primeng/chart';
+import { ConfirmationService } from 'primeng/api';
 import {TableModule} from 'primeng/table';
 import { DocumentComponent } from './pages/document/document.component';
 import { ChefEmplComponent } from './pages/chef-empl/chef-empl.component';
 import { ChefDemandeComponent } from './pages/chef-demande/chef-demande.component';
+import { MeetingComponent } from './pages/meeting/meeting.component';
+import { ChangementsituationComponent } from './pages/changementsituation/changementsituation.component';
 
 @NgModule({
   imports: [
@@ -64,7 +67,9 @@ import { ChefDemandeComponent } from './pages/chef-demande/chef-demande.componen
     ButtonModule,
     TableModule,
     ToastModule,
-    MenuModule
+    MenuModule,
+    ChartModule,
+    
   ],
   declarations: [
     AppComponent,
@@ -77,9 +82,11 @@ import { ChefDemandeComponent } from './pages/chef-demande/chef-demande.componen
     DocumentComponent,
     ChefEmplComponent,
     ChefDemandeComponent,
+    MeetingComponent,
+    ChangementsituationComponent,
     
   ],
-  providers: [],
+  providers: [ConfirmationService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

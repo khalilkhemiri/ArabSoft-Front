@@ -34,6 +34,7 @@ export const ROUTES: RouteInfo[] = [
       { path: '/pret', title: 'Pret', icon: 'ni-money-coins text-red', class: '' },
       { path: '/doc', title: 'DocumentAdministratif', icon: 'ni-single-copy-04 text-info', class: '' },
       { path: '/autorisation', title: 'Autorisation', icon: 'ni-check-bold text-orange', class: '' },
+      { path: '/situation', title: 'Changement Situation', icon: 'fa fa-exchange-alt text-black', class: '' },
 
     ]
   },
@@ -55,6 +56,7 @@ export const PERS: RouteInfo[] = [
       { path: '/pret', title: 'Pret', icon: 'ni-money-coins text-red', class: '' },
       { path: '/doc', title: 'DocumentAdministratif', icon: 'ni-single-copy-04 text-info', class: '' },
       { path: '/autorisation', title: 'Autorisation', icon: 'ni-check-bold text-orange', class: '' },
+      { path: '/situation', title: 'Changement Situation', icon: 'fa fa-exchange-alt text-orange', class: '' },
 
     ]
   },
