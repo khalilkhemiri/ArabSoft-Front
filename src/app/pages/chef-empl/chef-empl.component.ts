@@ -46,12 +46,10 @@ personnel:number;
     this.userProfileService.unassignPersonnel(personnelId).subscribe(
       response => {
         console.log('Personnel unassigned successfully:', response);
-        // Optionally refresh the personnel list after unassigning
         this.ngOnInit();
       },
       error => {
         console.error('Erreur lors de la désaffectation du personnel:', error);
-        // Inspect error object for more details
         console.log('Detailed Error:', error.error);
       }
     );

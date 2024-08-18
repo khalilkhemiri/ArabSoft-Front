@@ -60,13 +60,11 @@ export class ChefDemandeComponent implements OnInit {
   }
 
   approveDemande() {
-    // Logique pour approuver la demande
     console.log('Demande approuvée:', this.selectedDemande);
     this.closeDialog();
   }
 
   rejectDemande() {
-    // Logique pour rejeter la demande
     console.log('Demande rejetée:', this.selectedDemande);
     this.closeDialog();
   }
